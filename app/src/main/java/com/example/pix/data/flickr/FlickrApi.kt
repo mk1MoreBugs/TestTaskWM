@@ -1,7 +1,5 @@
 package com.example.pix.data.flickr
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import com.example.pix.BuildConfig
 import com.example.pix.data.flickr.dto.FlickrResult
 import retrofit2.http.GET
