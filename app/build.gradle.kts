@@ -106,6 +106,6 @@ dependencies {
     testImplementation(libs.google.truth)
     androidTestImplementation(libs.google.truth)
 
-    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
 
 }
