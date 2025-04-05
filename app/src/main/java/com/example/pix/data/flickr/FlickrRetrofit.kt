@@ -4,11 +4,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object FlickrRetrofit {
-    val api = lazy {
-        Retrofit.Builder()
+    fun create(): Retrofit {
+        return Retrofit.Builder()
             .baseUrl("https://www.flickr.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(FlickrApi::class.java)
     }
 }
