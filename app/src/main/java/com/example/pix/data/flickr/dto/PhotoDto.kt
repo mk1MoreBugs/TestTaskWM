@@ -1,13 +1,17 @@
 package com.example.pix.data.flickr.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class PhotoDto(
-    val farm: Int,
     val id: String,
-    val isfamily: Int,
-    val isfriend: Int,
-    val ispublic: Int,
     val owner: String,
     val secret: String,
     val server: String,
-    val title: String
+    val title: String,
+    @SerializedName("ispublic")
+    val isPublic: Int,
+    @SerializedName("isfriend")
+    val isFriend: Int,
+    @SerializedName("isfamily")
+    val isFamily: Int,
 )
