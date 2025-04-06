@@ -30,9 +30,25 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        val keystorePropertiesFile = rootProject.file("keystore.properties")
+        val keystoreProperties = Properties()
+        keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+        create("release") {
+            storeFile = file(keystoreProperties["storePath"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+        }
+    }
+
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,15 +56,16 @@ android {
             buildConfigField("String", "FLICKR_API", "\"${apiProperties["flickrApi"]}\"")
         }
         debug {
+            isDebuggable = true
             buildConfigField("String", "FLICKR_API", "\"${apiProperties["flickrApi"]}\"")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "19"
     }
     buildFeatures {
         compose = true
