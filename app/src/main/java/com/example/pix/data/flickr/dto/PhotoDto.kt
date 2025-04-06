@@ -1,7 +1,9 @@
 package com.example.pix.data.flickr.dto
 
+import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
+@Keep
 data class PhotoDto(
     val id: String,
     val owner: String,
