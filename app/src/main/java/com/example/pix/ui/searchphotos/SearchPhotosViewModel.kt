@@ -3,8 +3,10 @@ package com.example.pix.ui.searchphotos
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pix.data.flickr.FlickrRepository
+import com.example.pix.di.IoDispatcher
 import com.example.pix.domain.entity.Picture
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,10 +15,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class SearchPhotosViewModel @Inject constructor(
-    private val repository: FlickrRepository
+    private val repository: FlickrRepository,
+    @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ): ViewModel() {
 
     private val _listPhotos: MutableStateFlow<MutableList<Picture>> = MutableStateFlow(
@@ -44,7 +46,7 @@ class SearchPhotosViewModel @Inject constructor(
     }
 
     fun addPhotosToUiState() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             val photos = repository.searchPhotos(
                 text = uiState.value.searchTextField,
                 page = uiState.value.pageCount,
