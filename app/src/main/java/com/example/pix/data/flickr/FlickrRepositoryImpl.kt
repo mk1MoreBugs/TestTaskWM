@@ -13,8 +13,12 @@ class FlickrRepositoryImpl @Inject constructor(
         page: Int,
         count: Int,
     ): List<Picture> {
-        val result: FlickrResult = flickrApi.search(text, page, count)
-        val  listPictures = result.photos?.photo?.map { it.toPicture() }
-        return listPictures ?: listOf()
+        try {
+            val result: FlickrResult = flickrApi.search(text, page, count)
+            val  listPictures = result.photos?.photo?.map { it.toPicture() }
+            return listPictures ?: listOf()
+        } catch (e: Exception) {
+            return listOf()
+        }
     }
 }
