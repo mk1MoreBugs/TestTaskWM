@@ -3,8 +3,9 @@ package com.example.pix.data.flickr
 import com.example.pix.data.flickr.dto.FlickrResult
 import com.example.pix.data.flickr.mapper.toPicture
 import com.example.pix.domain.entity.Picture
+import javax.inject.Inject
 
-class FlickrRepositoryImpl(
+class FlickrRepositoryImpl @Inject constructor(
     private val flickrApi: FlickrApi,
 ) : FlickrRepository {
     override suspend fun searchPhotos(
