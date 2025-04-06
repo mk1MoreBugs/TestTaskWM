@@ -7,6 +7,9 @@ import androidx.compose.runtime.Composable
 @Composable
 fun PixScaffold(
     statusbarTitle: String,
+    searchText: String = "",
+    onSearchTextChange: (String) -> Unit = {},
+    onSearchTextButtonClick: () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
@@ -14,7 +17,10 @@ fun PixScaffold(
     Scaffold(
         topBar = {
             PixStatusBar(
-                title = statusbarTitle
+                title = statusbarTitle,
+                searchText = searchText,
+                onSearchTextChange = onSearchTextChange,
+                onSearchTextButtonClick = onSearchTextButtonClick,
             )
         },
         bottomBar = bottomBar,

@@ -16,18 +16,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.pix.R
+import com.example.pix.domain.entity.Picture
 import com.example.pix.ui.components.PixScaffold
 import com.example.pix.ui.navigation.Destinations
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import com.example.pix.domain.entity.Picture
 import com.example.pix.ui.theme.PixTheme
 
 @Composable
@@ -35,16 +35,20 @@ fun SearchPhotosScreen(
     viewModel: SearchPhotosViewModel = hiltViewModel(),
     onNavigateTo: (Destinations) -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     PixScaffold(
-        statusbarTitle = stringResource(R.string.search_photos)
+        statusbarTitle = stringResource(R.string.search_photos),
+        searchText = uiState.searchTextField,
+        onSearchTextChange = viewModel::updateSearchTextField,
+        onSearchTextButtonClick = viewModel::makeNewSearchRequest,
     ) { innerPadding ->
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         SearchPhotosContent(
             modifier = Modifier.padding(innerPadding),
             uiState = uiState,
-            onNavigateTo =onNavigateTo,
-            onLoadMoreButtonClick = viewModel::addPhotosToUiState
+            onNavigateTo = onNavigateTo,
+            onLoadMoreButtonClick = viewModel::addPhotosToUiState,
         )
     }
 }
@@ -77,7 +81,6 @@ fun SearchPhotosContent(
                         )
                     }
                 }
-
             }
         }
         item {
@@ -102,7 +105,9 @@ fun PhotoCard(
 ) {
     val cardSize = 100.dp
     Card(
-        modifier = Modifier.padding(10.dp).size(cardSize),
+        modifier = Modifier
+            .padding(10.dp)
+            .size(cardSize),
         onClick = {
             onNavigateTo(
                 Destinations.WatchPhoto(
@@ -129,7 +134,7 @@ fun PhotoCard(
 
 @Preview(showBackground = true)
 @Composable
-fun SearchPhotosContentPreview() {
+private fun SearchPhotosContentPreview() {
     PixTheme {
         SearchPhotosContent(
             uiState = SearchPhotosUiState(
