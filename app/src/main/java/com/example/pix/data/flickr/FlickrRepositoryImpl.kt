@@ -1,5 +1,6 @@
 package com.example.pix.data.flickr
 
+import android.util.Log
 import com.example.pix.data.flickr.dto.FlickrResult
 import com.example.pix.data.flickr.mapper.toPicture
 import com.example.pix.domain.entity.Picture
@@ -18,6 +19,7 @@ class FlickrRepositoryImpl @Inject constructor(
             val  listPictures = result.photos?.photo?.map { it.toPicture() }
             return listPictures ?: listOf()
         } catch (e: Exception) {
+            Log.e("Error retrofit", e.message.toString())
             return listOf()
         }
     }
